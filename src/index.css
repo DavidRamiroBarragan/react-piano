@@ -2,3 +2,20 @@
   --footer-height: 60px;
   --log-height: 8rem;
 }
+
+*,*::after,*::before{
+  box-sizing: border-box;
+}
+
+.app{
+  min-height: 100vh;
+}
+
+.app-content {
+  --offset: calc(var(--footer-height) + var(--log-height));
+  min-height: calc(100vh - var(--offset));
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

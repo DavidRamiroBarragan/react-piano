@@ -5,7 +5,7 @@ export const Logo: FunctionComponent = () => {
   return (
     <h1 className="logo">
       <span role="img" aria-label="metal hand emoji">
-        ✌
+      🤟
       </span>
       <span role="img" aria-label="musical keyboard emoji">
         🎹
