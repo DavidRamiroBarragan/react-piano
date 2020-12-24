@@ -1,4 +1,4 @@
-import { FunctionComponent, PropsWithChildren, useState } from "react";
+import { FunctionComponent, useState } from "react";
 import { DEFAULT_INSTRUMENT } from "../../domain/sound";
 import { InstrumentContext } from "./Context";
 
