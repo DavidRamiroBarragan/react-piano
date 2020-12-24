@@ -37,3 +37,32 @@ export const PITCHES_REGISTRY: Record<PitchIndex, NotePitch> = {
   10: "A",
   11: "B",
 };
+
+export function fromMidi(midi: MidiValue): Note {
+  const pianoRange = midi - C1_MIDI_NUMBER;
+  const octave = (Math.floor(pianoRange / SEMITONES_IN_OCTAVE) +
+    1) as OctaveIndex;
+
+  const index = pianoRange % SEMITONES_IN_OCTAVE;
+  const pitch = PITCHES_REGISTRY[index];
+  const isSharp = !NATURAL_PITCH_INDICES.includes(index);
+  const type = isSharp ? "sharp" : "natural";
+
+  return { octave, pitch, index, type, midi };
+}
+
+interface NotesGeneratorSettings {
+  fromNote?: MidiValue;
+  toNote?: MidiValue;
+}
+
+export function generateNotes({
+  fromNote = LOWER_NOTE,
+  toNote = HIGHER_NOTE,
+}: NotesGeneratorSettings = {}): Note[] {
+  return Array(toNote - fromNote + 1)
+    .fill(0)
+    .map((_, index: number) => fromMidi(fromNote + index));
+}
+
+export const notes = generateNotes();
