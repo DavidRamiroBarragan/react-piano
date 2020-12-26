@@ -1,4 +1,4 @@
-import React, { ComponentType, useEffect } from "react";
+import { ComponentType, useEffect } from "react";
 import { InstrumentName } from "soundfont-player";
 import { MidiValue } from "../../domain/note";
 import { useSoundfont } from "./useSoundfont";
@@ -14,16 +14,18 @@ interface ProviderProps {
   instrument?: InstrumentName;
 }
 
-export const withInstrument = (WrappedComponent: ComponentType<InjectedProps>) => {
-    return function WithInstrumentComponent(props: ProviderProps) {
-        const { AudioContext, instrument } = props;
-        const fromHook = useSoundfont({ AudioContext });
-        const { loading, current, play, stop, load } = fromHook;
+export const withInstrument = (
+  WrappedComponent: ComponentType<InjectedProps>
+) => {
+  return function WithInstrumentComponent(props: ProviderProps) {
+    const { AudioContext, instrument } = props;
+    const fromHook = useSoundfont({ AudioContext });
+    const { loading, current, play, stop, load } = fromHook;
 
-        useEffect(() => {
-            if (!loading && instrument !== current) load(instrument);
-        }, [current, instrument, load, loading])
+    useEffect(() => {
+      if (!loading && instrument !== current) load(instrument);
+    }, [current, instrument, load, loading]);
 
-        return (<WrappedComponent loading={loading} play={play} stop={stop} />)
-    }
-}
+    return <WrappedComponent loading={loading} play={play} stop={stop} />;
+  };
+};
