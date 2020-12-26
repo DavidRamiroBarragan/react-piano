@@ -1,6 +1,5 @@
 import {
   FunctionComponent,
-  ReactElement,
   useCallback,
   useEffect,
   useRef,
@@ -10,20 +9,9 @@ import Soundfont, { InstrumentName, Player } from "soundfont-player";
 import { MidiValue } from "../../domain/note";
 import { AudioNodesRegistry, DEFAULT_INSTRUMENT } from "../../domain/sound";
 import { Optional } from "../../domain/types";
+import { ProviderPropsWithRender } from "./soundfont.type";
 
-interface ProviderProps {
-  instrument?: InstrumentName;
-  AudioContext: AudioContextType;
-  render(props: ProvidedProps): ReactElement;
-}
-
-interface ProvidedProps {
-  loading: boolean;
-  play(note: MidiValue): Promise<void>;
-  stop(note: MidiValue): Promise<void>;
-}
-
-export const SoundfontProvider: FunctionComponent<ProviderProps> = ({
+export const SoundfontProvider: FunctionComponent<ProviderPropsWithRender> = ({
   AudioContext,
   instrument,
   render,

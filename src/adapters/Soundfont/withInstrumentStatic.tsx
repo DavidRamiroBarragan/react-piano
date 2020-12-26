@@ -3,21 +3,7 @@ import Soundfont, { InstrumentName, Player } from "soundfont-player";
 import { MidiValue } from "../../domain/note";
 import { Optional } from "../../domain/types";
 import { AudioNodesRegistry, DEFAULT_INSTRUMENT } from "../../domain/sound";
-
-interface InjectedProps {
-  loading: boolean;
-  play(note: MidiValue): Promise<void>;
-  stop(note: MidiValue): Promise<void>;
-}
-
-interface ProviderProps {
-  AudioContext: AudioContextType;
-}
-
-interface ProviderState {
-  loading: boolean;
-  current: Optional<InstrumentName>;
-}
+import { InjectedProps, ProviderState, ProviderProps } from "./soundfont.type";
 
 export function withInstrumentStatic<
   TProps extends InjectedProps = InjectedProps

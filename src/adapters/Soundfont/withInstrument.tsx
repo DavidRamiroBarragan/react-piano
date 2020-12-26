@@ -1,27 +1,9 @@
-import { Component, ComponentType, FunctionComponent } from "react";
-import Soundfont, { InstrumentName, Player } from "soundfont-player";
+import { ComponentType, Component } from "react";
+import Soundfont, { Player, InstrumentName } from "soundfont-player";
 import { MidiValue } from "../../domain/note";
-import { AudioNodesRegistry, DEFAULT_INSTRUMENT } from "../../domain/sound";
+import { DEFAULT_INSTRUMENT, AudioNodesRegistry } from "../../domain/sound";
 import { Optional } from "../../domain/types";
-import { useInstrument } from "../../state/Instrument/Context";
-import { useAudioContext } from "../AudioContextProvider/useAudioContext";
-import { Keyboard } from "./Keyboard";
-import "./styles.css";
-interface InjectedProps {
-  loading: boolean;
-  play(note: MidiValue): Promise<void>;
-  stop(note: MidiValue): Promise<void>;
-}
-
-interface ProviderProps {
-  AudioContext: AudioContextType;
-  instrument: InstrumentName;
-}
-
-interface ProviderState {
-  loading: boolean;
-  current: Optional<InstrumentName>;
-}
+import { InjectedProps, ProviderProps, ProviderState } from "./soundfont.type";
 
 export function withInstrument<TProps extends InjectedProps = InjectedProps>(
   WrappedComponent: ComponentType<TProps>
@@ -67,7 +49,7 @@ export function withInstrument<TProps extends InjectedProps = InjectedProps>(
 
     public componentDidMount() {
       const { instrument } = this.props;
-      this.load(instrument);
+      if (instrument) this.load(instrument);
     }
 
     public shouldComponentUpdate({ instrument }: ProviderProps) {
@@ -106,14 +88,3 @@ export function withInstrument<TProps extends InjectedProps = InjectedProps>(
     }
   };
 }
-
-const WrappedKeyboard = withInstrument(Keyboard);
-
-export const KeyboardWithInstrument: FunctionComponent = () => {
-  const AudioContext = useAudioContext()!;
-  const { instrument } = useInstrument();
-
-  return (
-    <WrappedKeyboard AudioContext={AudioContext} instrument={instrument} />
-  );
-};

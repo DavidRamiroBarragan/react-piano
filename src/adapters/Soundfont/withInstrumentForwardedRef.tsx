@@ -3,26 +3,11 @@ import Soundfont, { InstrumentName, Player } from "soundfont-player";
 import { MidiValue } from "../../domain/note";
 import { Optional } from "../../domain/types";
 import { AudioNodesRegistry, DEFAULT_INSTRUMENT } from "../../domain/sound";
+import { InjectedProps, ProviderProps, ProviderState } from "./soundfont.type";
 
-interface InjectedProps {
-  loading: boolean;
-  play(note: MidiValue): Promise<void>;
-  stop(note: MidiValue): Promise<void>;
-}
-
-interface ProviderProps {
-  AudioContext: AudioContextType;
-  instrument: InstrumentName;
-}
-
-interface ProviderState {
-  loading: boolean;
-  current: Optional<InstrumentName>;
-}
-
-export function withInstrument<TProps extends InjectedProps = InjectedProps>(
-  WrappedComponent: ComponentClass<TProps>
-) {
+export function withInstrumentFordWardedRef<
+  TProps extends InjectedProps = InjectedProps
+>(WrappedComponent: ComponentClass<TProps>) {
   type ComponentInstance = InstanceType<typeof WrappedComponent>;
   type WithForwardedRef = ProviderProps & {
     forwardedRef: Ref<ComponentInstance>;
@@ -61,7 +46,9 @@ export function withInstrument<TProps extends InjectedProps = InjectedProps>(
 
     public componentDidMount() {
       const { instrument } = this.props;
-      this.load(instrument);
+      if (instrument) {
+        this.load(instrument);
+      }
     }
 
     public shouldComponentUpdate({ instrument }: ProviderProps) {
